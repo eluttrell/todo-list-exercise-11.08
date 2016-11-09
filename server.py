@@ -30,6 +30,11 @@ def mark_task():
     })
     return jsonify(result)
 
+@app.route('/delete_task', methods=['DELETE'])
+def delete_task():
+    results = db.query('DELETE FROM task WHERE done = true')
+    return jsonify(results)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
