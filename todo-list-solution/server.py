@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 import pg
 
 app = Flask('todo-list')
-db = pg.DB(dbname='todolist_db')
+db = pg.DB(dbname='todo_list_db')
 
 @app.route('/')
 def home():
@@ -16,20 +16,18 @@ def list_tasks():
 @app.route('/add_task', methods=['POST'])
 def add_task():
     description = request.form.get('task')
-    # print description
     result = db.insert('task', description=description)
     return jsonify(result)
 
 @app.route('/mark_task', methods=['POST'])
 def mark_task():
     task_id = int(request.form.get('id'))
-    task_done = request.form.get('done') == 'true'
+    task_done = request.form.get('done')
     result = db.update('task', {
         'id': task_id,
         'done': task_done
     })
     return jsonify(result)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
